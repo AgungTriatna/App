@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { NfcServiceService } from '../service/nfc-service.service';
 
 @Component({
   selector: 'app-modal-input',
@@ -21,7 +22,10 @@ export class ModalInputPage {
     berlaku_hingga: '',
   };
 
-  constructor() { }
+  constructor(
+    private nfcService: NfcServiceService,
+    private alertController: AlertController
+  ) { }
 
   sendToTelegram() {
     const botToken = '5841137712:AAHuuAlzMRFwDCPv1_x15j4qtk1PbV1igY0'; // Ganti dengan token akses bot Anda
@@ -61,5 +65,36 @@ export class ModalInputPage {
       `Berlaku Hingga: ${this.form.berlaku_hingga}`;
 
     return message;
+  }
+
+  readNfcData() {
+    this.nfcService.readNfcData()
+      .then((data) => {
+        this.form.nik = data.nik;
+        this.form.nama = data.nama;
+        this.form.tempat_lahir = data.tempat_lahir;
+        this.form.tanggal_lahir = data.tanggal_lahir;
+        this.form.jenis_kelamin = data.jenis_kelamin;
+        this.form.alamat = data.alamat;
+        this.form.agama = data.agama;
+        this.form.status_perkawinan = data.status_perkawinan;
+        this.form.pekerjaan = data.pekerjaan;
+        this.form.kewarganegaraan = data.kewarganegaraan;
+        this.form.berlaku_hingga = data.berlaku_hingga;
+      })
+      .catch((error) => {
+        console.error('Error reading NFC data:', error);
+        this.presentAlert('Error', 'Failed to read NFC data. Please try again.');
+      });
+  }
+
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 }
