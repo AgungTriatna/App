@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-modal-input',
@@ -23,8 +24,8 @@ export class ModalInputPage {
   constructor() { }
 
   sendToTelegram() {
-    const botToken = '6279321249:AAGPh1WKSS0IG2QQ4rdd1rf-AAh9Z7ZYOsc'; // Ganti dengan token akses bot Anda
-    const chatId = '1027772636'; // Ganti dengan ID obrolan tujuan Anda
+    const botToken = '5841137712:AAHuuAlzMRFwDCPv1_x15j4qtk1PbV1igY0'; // Ganti dengan token akses bot Anda
+    const chatId = '1271593414'; // Ganti dengan ID obrolan tujuan Anda
     const message = this.generateMessage();
     const apiUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
@@ -46,8 +47,7 @@ export class ModalInputPage {
   }
 
   generateMessage(): string {
-    // Generate the message string based on the form data
-    // You can customize the message format according to your needs
+
     const message = `NIK: ${this.form.nik}\n` +
       `Nama: ${this.form.nama}\n` +
       `Tempat Lahir: ${this.form.tempat_lahir}\n` +
