@@ -13,6 +13,10 @@ export class RiwayatPage implements OnInit {
   ngOnInit() {
   }
 
+  goToDetailPage() {
+    this.router.navigateByUrl('/detail');
+  }
+
   ionViewDidEnter() {
     const currentUrl = this.router.url;
     if (currentUrl !== '/tabs/riwayat') {

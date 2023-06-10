@@ -17,6 +17,10 @@ const routes: Routes = [
   {
     path: 'detail',
     loadChildren: () => import('./detail/detail.module').then(m => m.DetailPageModule)
+  },
+  {
+    path: 'modal-input',
+    loadChildren: () => import('./modal-input/modal-input.module').then( m => m.ModalInputPageModule)
   }
 ];
 @NgModule({
