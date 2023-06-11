@@ -13,6 +13,10 @@
       </ion-list-header>
       <ion-item *ngFor="let d of data;let i = index">
         <ion-label>{{ i + 1 }}. {{"NIK : "}}.{{d.nik}} </ion-label>
+        <ion-button (click)="presentToast(d)">
+          <ion-icon name="detail"></ion-icon>
+          Detail
+        </ion-button>
       </ion-item>
     </ion-list>
   </div>
