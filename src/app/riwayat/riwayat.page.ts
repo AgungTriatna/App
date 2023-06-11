@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { StorageService } from '../service/storage.service';
+
 
 @Component({
   selector: 'app-riwayat',
@@ -8,9 +10,23 @@ import { Router } from '@angular/router';
 })
 export class RiwayatPage implements OnInit {
 
-  constructor(private router: Router) { }
+  data: any[] = [];
+  isLoaded = false;
 
-  ngOnInit() {
+  constructor(
+    private router: Router,
+    private StorageService: StorageService) { }
+
+  ngOnInit(): void {
+    this.getAllData();
+    this.isLoaded = true;
+  }
+
+
+  async getAllData() {
+    const data = await this.StorageService.getAllData();
+    console.log(data);
+    this.data = data;
   }
 
   goToDetailPage() {

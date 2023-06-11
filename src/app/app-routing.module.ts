@@ -21,7 +21,15 @@ const routes: Routes = [
   {
     path: 'modal-input',
     loadChildren: () => import('./modal-input/modal-input.module').then( m => m.ModalInputPageModule)
+  },  {
+    path: 'nfc-reader',
+    loadChildren: () => import('./nfc-reader/nfc-reader.module').then( m => m.NfcReaderPageModule)
+  },
+  {
+    path: 'nfc-reader',
+    loadChildren: () => import('./nfc-reader/nfc-reader.module').then( m => m.NfcReaderPageModule)
   }
+
 ];
 @NgModule({
   imports: [

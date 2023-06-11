@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { NfcServiceService } from '../service/nfc-service.service';
+import { ToastController } from '@ionic/angular';
+import { StorageService } from '../service/storage.service';
+
 
 @Component({
   selector: 'app-modal-input',
@@ -23,11 +25,42 @@ export class ModalInputPage {
   };
 
   constructor(
-    private nfcService: NfcServiceService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private toastController: ToastController,
+    private StorageService: StorageService,
   ) { }
 
+
+  inputCheck() {
+    if (
+      !this.form.nik ||
+      !this.form.nama ||
+      !this.form.tempat_lahir ||
+      !this.form.tanggal_lahir ||
+      !this.form.jenis_kelamin ||
+      !this.form.alamat ||
+      !this.form.agama ||
+      !this.form.status_perkawinan ||
+      !this.form.pekerjaan ||
+      !this.form.kewarganegaraan ||
+      !this.form.berlaku_hingga
+    ) {
+      this.toastController.create({
+        message: 'Mohon lengkapi data',
+        duration: 2000,
+        color: 'danger'
+      }).then(toast => toast.present());
+
+      return false;
+    }
+    return true;
+  }
+
   sendToTelegram() {
+
+    const isValid = this.inputCheck();
+    if (!isValid) return;
+
     const botToken = '5841137712:AAHuuAlzMRFwDCPv1_x15j4qtk1PbV1igY0'; // Ganti dengan token akses bot Anda
     const chatId = '1271593414'; // Ganti dengan ID obrolan tujuan Anda
     const message = this.generateMessage();
@@ -43,10 +76,20 @@ export class ModalInputPage {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('Message sent to Telegram:', data);
+        this.StorageService.addData(this.form);
+        this.toastController.create({
+          message: 'Data berhasil dikirimkan',
+          duration: 2000,
+          color: 'success' // Mengubah warna menjadi 'success' (hijau)
+        }).then(toast => toast.present());
+
       })
       .catch((error) => {
-        console.error('Error sending message to Telegram:', error);
+        this.toastController.create({
+          message: 'Data Gagal di Kirim',
+          duration: 2000,
+          color: 'danger'
+        }).then(toast => toast.present());
       });
   }
 
@@ -67,26 +110,6 @@ export class ModalInputPage {
     return message;
   }
 
-  readNfcData() {
-    this.nfcService.readNfcData()
-      .then((data) => {
-        this.form.nik = data.nik;
-        this.form.nama = data.nama;
-        this.form.tempat_lahir = data.tempat_lahir;
-        this.form.tanggal_lahir = data.tanggal_lahir;
-        this.form.jenis_kelamin = data.jenis_kelamin;
-        this.form.alamat = data.alamat;
-        this.form.agama = data.agama;
-        this.form.status_perkawinan = data.status_perkawinan;
-        this.form.pekerjaan = data.pekerjaan;
-        this.form.kewarganegaraan = data.kewarganegaraan;
-        this.form.berlaku_hingga = data.berlaku_hingga;
-      })
-      .catch((error) => {
-        console.error('Error reading NFC data:', error);
-        this.presentAlert('Error', 'Failed to read NFC data. Please try again.');
-      });
-  }
 
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({

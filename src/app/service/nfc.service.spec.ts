@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NfcServiceService } from './nfc-service.service';
+import { NfcService } from './nfc.service';
 
-describe('NfcServiceService', () => {
-  let service: NfcServiceService;
+describe('NfcService', () => {
+  let service: NfcService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(NfcServiceService);
+    service = TestBed.inject(NfcService);
   });
 
   it('should be created', () => {
